@@ -4,44 +4,58 @@ import React, {useState, useEffect} from 'react'
 
 function App() {
 
-  const [gridNums,setGridNums] = useState({})
+  const [gridRxC,setGridRxC] = useState({})
   const [oddGrid,isOddGrid] = useState(false)
+  const [gridNums,setGridNums] = useState({})
 
   useEffect(()=>{
-    setGridNums({
+    //initial grid setup
+    setGridRxC({
       rows:4,
       columns:4
     })
   },[])
+
   useEffect(()=>{
-    let nums = gridNums.columns * gridNums.rows
-    if(nums%2!=0){
+    //keeps track of whether grid is even or odd, then sets grid nums
+    let nums = gridRxC.columns * gridRxC.rows
+    if(nums%2!==0){
       isOddGrid(true)
+      setGridNums({})
     }
     else{
       isOddGrid(false)
+      let randomNums = {}
+      let index = 0
+      while(index < nums){
+        let id = Math.ceil(Math.random()*100)
+        if(randomNums[id])continue
+        randomNums[id]=2
+        index+=2
+      }
+      setGridNums(randomNums)
     }
-  },[gridNums])
+  },[gridRxC])
 
   function modColumn(instructions){
-    let newColumns = {...gridNums}
+    let newColumns = {...gridRxC}
     if(instructions==='addColumn') newColumns.columns +=1
     if(instructions === 'subtractColumn') newColumns.columns -=1
-    setGridNums(newColumns)
+    setGridRxC(newColumns)
   }
 
   function modRow(instructions){
-    let newRows = {...gridNums}
+    let newRows = {...gridRxC}
     if(instructions==='addRow') newRows.rows +=1
     if(instructions === 'subtractRow') newRows.rows -=1
-    setGridNums(newRows)
+    setGridRxC(newRows)
   }
 
   const buildGrid = () =>{
-    console.log(oddGrid)
-    let grid = new Array(gridNums.columns).fill('')
+    let keys = Object.keys(gridNums)
+    let grid = new Array(gridRxC.columns).fill('')
     grid = grid.map(()=>{
-      return new Array(gridNums.rows).fill('1')
+      return new Array(gridRxC.rows).fill()
     })
     return grid.map((rows)=>{
       return (
