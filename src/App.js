@@ -1,7 +1,6 @@
 import './App.css';
 import Square from './components/Square.js'
 import React, {useState, useEffect} from 'react'
-import { findAllInRenderedTree } from 'react-dom/test-utils';
 
 function App() {
 
@@ -25,7 +24,6 @@ function App() {
       current.tile.style.color = 'white'
     }
     if(pair.length===2){
-      console.log(pair[1])
       let current = pair[pair.length-1]
       let compare = pair[0]
       if(stateGrid[current.coordinates[0]][current.coordinates[1]] != stateGrid[compare.coordinates[0]][compare.coordinates[1]]){
