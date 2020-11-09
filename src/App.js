@@ -20,15 +20,11 @@ function App() {
   useEffect(()=>{
     //keeps track of whether grid is even or odd, then sets grid
     let nums = gridRxC.columns * gridRxC.rows
-    console.log('columns',gridRxC.columns, 'rows',gridRxC.rows)
     let grid = []
-    for(let i = 0;i<gridRxC.rows;i++){
-      grid.push([])
-    }
-    for(let i = 0;i<grid.length;i++){
-      let columns =  new Array(gridRxC.columns).fill('')
-      grid[i] = columns
-    }
+    grid = new Array(gridRxC.rows).fill('')
+    grid = grid.map(()=>{
+      return new Array(gridRxC.columns).fill('')
+    })
     if(nums%2!==0){
       isOddGrid(true)
       for(let row = 0;row<grid.length;row++){
@@ -48,7 +44,6 @@ function App() {
         index+=2
       }
       let randomNumKeys = Object.keys(randomNums)
-      console.log(grid)
       for(let row = 0;row<grid.length;row++){
         for(let column = 0;column < grid[row].length;column++){
           let index = Math.floor(Math.random()*randomNumKeys.length)
@@ -79,9 +74,7 @@ function App() {
   }
 
   const buildGrid = () =>{
-    console.log(stateGrid)
     return stateGrid.map((rows)=>{
-      console.log(rows)
       return (
         <div className = 'row'>
           {rows.map((num)=>{
