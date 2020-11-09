@@ -11,8 +11,8 @@ function App() {
   useEffect(()=>{
     //initial grid setup
     setGridRxC({
-      rows:4,
-      columns:4
+      rows:2,
+      columns:2
     })
   },[])
 
@@ -21,7 +21,6 @@ function App() {
     let nums = gridRxC.columns * gridRxC.rows
     if(nums%2!==0){
       isOddGrid(true)
-      setGridNums({})
     }
     else{
       isOddGrid(false)
@@ -51,8 +50,15 @@ function App() {
     setGridRxC(newRows)
   }
 
+  function flip(){
+    let headTails = Math.floor(Math.random()*2)
+    console.log(headTails)
+  }
   const buildGrid = () =>{
     let keys = Object.keys(gridNums)
+    let copyGridNums = {...gridNums}
+    //for initial render
+    if(keys.length===0)return
     let grid = new Array(gridRxC.columns).fill('')
     grid = grid.map(()=>{
       return new Array(gridRxC.rows).fill()
@@ -61,7 +67,20 @@ function App() {
       return (
         <div>
         {rows.map(()=>{
-          return <Square/>
+          let ID = ''
+          if(!oddGrid){
+            //for every square, remove used keys/nums from array
+            for(let i = 0;i<keys.length;i++){
+            let keyOfInd = keys[i]
+            if(!copyGridNums[keyOfInd]){
+              keys.splice(i,1)
+            }
+          } //then assign a key here to id that hasn't been already assigned
+            let index = Math.floor(Math.random()*keys.length)
+            ID = keys[index]
+            copyGridNums[ID]-=1
+          }
+          return <Square value = {ID}/>
         })}
       </div>
       )
