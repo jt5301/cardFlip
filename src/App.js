@@ -6,8 +6,8 @@ function App() {
 
   const [gridRxC,setGridRxC] = useState({})
   const [oddGrid,isOddGrid] = useState(false)
-  const [grid,setGrid] = useState([])
-  const [pair,setPair] = useState([])
+  const [stateGrid,setStateGrid] = useState([])
+  const [pair,pickPair] = useState([])
 
   useEffect(()=>{
     //initial grid setup
@@ -20,10 +20,15 @@ function App() {
   useEffect(()=>{
     //keeps track of whether grid is even or odd, then sets grid
     let nums = gridRxC.columns * gridRxC.rows
-    let grid = new Array(gridRxC.columns).fill('')
-    grid = grid.map(()=>{
-      return new Array(gridRxC.rows).fill('')
-    })
+    console.log('columns',gridRxC.columns, 'rows',gridRxC.rows)
+    let grid = []
+    for(let i = 0;i<gridRxC.rows;i++){
+      grid.push([])
+    }
+    for(let i = 0;i<grid.length;i++){
+      let columns =  new Array(gridRxC.columns).fill('')
+      grid[i] = columns
+    }
     if(nums%2!==0){
       isOddGrid(true)
       for(let row = 0;row<grid.length;row++){
@@ -43,6 +48,7 @@ function App() {
         index+=2
       }
       let randomNumKeys = Object.keys(randomNums)
+      console.log(grid)
       for(let row = 0;row<grid.length;row++){
         for(let column = 0;column < grid[row].length;column++){
           let index = Math.floor(Math.random()*randomNumKeys.length)
@@ -55,8 +61,7 @@ function App() {
         }
       }
     }
-    console.log(grid)
-    setGrid(grid)
+    setStateGrid(grid)
   },[gridRxC])
 
   function modColumn(instructions){
@@ -74,50 +79,17 @@ function App() {
   }
 
   const buildGrid = () =>{
-    return grid.map((rows)=>{
+    console.log(stateGrid)
+    return stateGrid.map((rows)=>{
+      console.log(rows)
       return (
-        <div>
+        <div className = 'row'>
           {rows.map((num)=>{
            return(<Square value = {num}/>)
           })}
         </div>
       )
     })
-
-    // let keys = Object.keys(gridNums)
-    // let copyGridNums = {...gridNums}
-    // //for initial render
-    // if(keys.length===0)return
-    // let grid = new Array(gridRxC.columns).fill('')
-    // grid = grid.map(()=>{
-    //   return new Array(gridRxC.rows).fill()
-    // })
-    // return grid.map((rows)=>{
-    //   return (
-    //     <div>
-    //     {rows.map(()=>{
-    //       let ID = ''
-    //       if(!oddGrid){
-    //         //for every square, remove used keys/nums from array
-    //         for(let i = 0;i<keys.length;i++){
-    //         let keyOfInd = keys[i]
-    //         if(!copyGridNums[keyOfInd]){
-    //           keys.splice(i,1)
-    //         }
-    //       } //then assign a key here to id that hasn't been already assigned
-    //         let index = Math.floor(Math.random()*keys.length)
-    //         ID = keys[index]
-    //         copyGridNums[ID]-=1
-    //       }
-    //       return(
-    //         <div onClick = {(event)=>flip(event)}>
-    //           <Square value = {ID}/>
-    //         </div>
-    //       )
-    //     })}
-    //   </div>
-    //   )
-    // })
   }
   return (
     <div className="App">
