@@ -18,18 +18,15 @@ function App() {
   },[])
 
   useEffect(()=>{
+    //logic for what to do when two tiles are chosen
     if(pair.length===0)return
-    if(pair.length<=2){
-      let current = pair[pair.length-1]
-      current.tile.style.color = 'white'
-    }
     if(pair.length===2){
       let current = pair[pair.length-1]
       let compare = pair[0]
       if(stateGrid[current.coordinates[0]][current.coordinates[1]] != stateGrid[compare.coordinates[0]][compare.coordinates[1]]){
         setTimeout(()=>{
-          current.tile.style.color = 'red'
-          compare.tile.style.color = 'red'
+          current.tile.innerHTML = ''
+          compare.tile.innerHTML = ''
         },1000)
       }
       setPair([])
@@ -93,8 +90,10 @@ function App() {
   }
 
   function choosePair(event){
+    //choose number based one data row and data column
     let row = event.currentTarget.getAttribute("data-row")
     let column = event.currentTarget.getAttribute("data-column")
+    event.target.innerHTML = stateGrid[row][column]
     let coordinates = [row,column]
     if(pair.length===2)return
     let tileInfo = {coordinates,tile:event.target}
@@ -115,7 +114,7 @@ function App() {
               data-row = {row}
               data-column = {column}
               onClick = {(event)=>choosePair(event)}>
-              <Square value = {num}/>
+              <Square/>
              </div>
              )
           })}
